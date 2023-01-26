@@ -76,14 +76,14 @@ int main(int ac, char* av[])
     const double aRadius = 0.00578;
     const unsigned nRoots = 1000;
 
-    Waveguide *w;
+    urchin::Waveguide *w;
     if(bCircularWaveguide)
     {
-        w = new CircularWaveguide(aRadius,nRoots);
+        w = new urchin::CircularWaveguide(aRadius,nRoots);
     }
     else
     {
-        w = new RectangularWaveguide(10.668e-3, 4.318e-3); //Hardcoded WR42 waveguide
+        w = new urchin::RectangularWaveguide(10.668e-3, 4.318e-3); //Hardcoded WR42 waveguide
     }
 
     w->OpenCSV(outputFilename);
@@ -101,7 +101,7 @@ int main(int ac, char* av[])
             double rho = startRho;
             for(unsigned nr = 0; nr < nRhos; ++nr)
             {
-                Beta b(fc,B,rho);
+                urchin::Beta b(fc,B,rho);
                 Ptot = 0;
                 if(bTE) Ptot += w->TotalPower(N,M,H,fTol,b,true);
                 if(bTM) Ptot += w->TotalPower(N,M,H,fTol,b,false);

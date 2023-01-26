@@ -8,20 +8,24 @@
 // Encapsulates details for power in each mode (n,m,h)
 //////////////////////////////////////////////////
 
-class RectangularWaveguide: public Waveguide
+namespace urchin
 {
-    public:
-        RectangularWaveguide(const double &aA, const double &aB);
-        double TEModePower(const int& n, const int& m, const int& h, const Beta& beta) override;
-        double TMModePower(const int& n, const int& m, const int& h, const Beta& beta) override;
-        double TEkc(const int& n, const int& m) override;
-        double TMkc(const int& n, const int& m) override;
+    class RectangularWaveguide: public Waveguide
+    {
+        public:
+            RectangularWaveguide(const double &aA, const double &aB);
+            double TEModePower(const int& n, const int& m, const int& h, const Beta& beta) override;
+            double TMModePower(const int& n, const int& m, const int& h, const Beta& beta) override;
+            double TEkc(const int& n, const int& m) override;
+            double TMkc(const int& n, const int& m) override;
 
-    private:
-        double a;  //waveguide dimensions
-        double b; 
+        private:
+            double a;  //waveguide dimensions
+            double b; 
 
-        double kx(const int& m);
-        double ky(const int& n);
-};
+            double kx(const int& m);
+            double ky(const int& n);
+    };
+
+} /* namespace urchin */
 #endif

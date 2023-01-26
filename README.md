@@ -1,7 +1,7 @@
 c-urchin
 =======
 
-c-urchin is a small, C++-based cyclotron radiation power calculation for 90° on-axis betas in a waveguide using analytical solutions for circular and rectangular waveguides (publication upcoming).
+c-urchin is a small, C++-based cyclotron radiation power calculation for 90° betas in a waveguide using analytical solutions for circular and rectangular waveguides (publication upcoming).
 
 Dependencies
 ------------
@@ -50,7 +50,7 @@ Installing
 You should set the CMake variable `CMAKE_BUILD_TYPE` to either `RELEASE`, `STANDARD`, or `DEBUG` (default), in order of how much text output you would like (from least to most) and how much compiler optimization should be performed (from most to least).
 `RELEASE` is recommended when running in production, as it is >2x faster than `DEBUG`.
 
-3. Build and install.
+4. Build and install.
   ```
   $ make install
   ```
