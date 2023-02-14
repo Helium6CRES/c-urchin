@@ -55,7 +55,7 @@ namespace urchin
 
         output *= pow(beta.q * beta.velocity * h * beta.omega_c * Constants::MuNull() * boost::math::cyl_bessel_j_prime(h,kc*beta.Rc) / kc,2);
         const double wg_beta = sqrt(pow(h*beta.k,2)-pow(kc,2));
-        double P_N = h * beta.omega_c * Constants::MuNull() * wg_beta * a * b / (8 * pow(kc,4));
+        double P_N = h * beta.omega_c * Constants::MuNull() * wg_beta * a * b / (4 * pow(kc,4));
         const double dn = double(!n);
         const double dm = double(!m);
         P_N *= (tKx * tKx * (1-dm) * (1+dn)   + tKy * tKy * (1+dm) * (1-dn));
@@ -64,7 +64,7 @@ namespace urchin
 
     double RectangularWaveguide::TMModePower(const int& n, const int& m, const int& h, const Beta& beta)
     {
-        if(!m && !n) return 0;
+        if(!m || !n) return 0;
         const double kc = TEkc(n,m);
         const double delta = atan2(-n/b,m/a);
         const double tKx = kx(m);
@@ -86,7 +86,7 @@ namespace urchin
 
         const double wg_beta = sqrt(pow(h*beta.k,2)-pow(kc,2));
         output *= pow(beta.q * beta.velocity * wg_beta* h * boost::math::cyl_bessel_j(h,kc*beta.Rc) /(kc * kc * beta.Rc) ,2);
-        double P_N = h * beta.omega_c * Constants::EpsNull() * wg_beta * a * b / (8 * pow(kc,4));
+        double P_N = h * beta.omega_c * Constants::EpsNull() * wg_beta * a * b / (4 * pow(kc,4));
         const double dn = double(!n);
         const double dm = double(!m);
         P_N *= (tKx * tKx * (1+dm) * (1-dn)   + tKy * tKy * (1-dm) * (1+dn));
