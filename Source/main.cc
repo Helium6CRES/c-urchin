@@ -1,6 +1,7 @@
 #include <iostream>
 #include <math.h>
 #include <string>
+#include <random>
 #include <boost/program_options.hpp>
 
 #include "Beta.hh"
@@ -17,6 +18,8 @@ int main(int ac, char* av[])
     double endFrequency, endRho, endField;
     double fTol;
     bool bCircularWaveguide, bTE, bTM;
+    int seed;
+    bool randFrequency, randRho;
     std::string outputFilename;
 
     po::options_description desc("Allowed options");
@@ -40,6 +43,9 @@ int main(int ac, char* av[])
             ("end-frequency", po::value<double>(&endFrequency)->default_value(19e9), "Maximum frequency")
             ("end-rho", po::value<double>(&endRho)->default_value(0.), "Maximum rho value")
             ("end-field", po::value<double>(&endField)->default_value(2.), "Maximum B field value")
+            ("seed", po::value<int>(&seed)->default_value(-1), "RNG-seed. Negative for linspace. 0 for system time seed.")
+            ("rand-frequency", po::value<bool>(&randFrequency)->default_value(false), "True for random frequency value")
+            ("rand-rho", po::value<bool>(&randRho)->default_value(false), "True for random rho value (recommended for circular waveguide only)")
         ;
 
         po::variables_map vm;        
@@ -65,6 +71,23 @@ int main(int ac, char* av[])
         return 2;
     }
 
+    std::mt19937 gen; // Standard mersenne_twister_engine
+    bool useRandom = false;
+
+    if(seed == 0)
+    {
+        std::random_device rd;  // Will be used to obtain a seed for the random number engine
+        gen = std::mt19937(rd());
+        useRandom = true;
+    }  
+    else if(seed > 0)
+    {
+        gen = std::mt19937(seed);
+        useRandom = true;
+    }
+
+    std::uniform_real_distribution<> dis(0.,1.);
+
     auto dX = [](double a, double b, unsigned N ){ return N==1 ? 0 : (b-a)/(N-1);};
 
     const double dB = dX(startField, endField, nFields);
@@ -73,6 +96,7 @@ int main(int ac, char* av[])
 
     const double aRadius = 0.00578;
     const unsigned nRoots = 1600;
+
 
     urchin::Waveguide *w;
     if(bCircularWaveguide)
@@ -89,6 +113,7 @@ int main(int ac, char* av[])
     //Loop over betas to simulate
     double Ptot;
     double B = startField;
+
     
     for(unsigned nb = 0; nb < nFields; ++nb)
     {
@@ -98,6 +123,17 @@ int main(int ac, char* av[])
             double rho = startRho;
             for(unsigned nr = 0; nr < nRhos; ++nr)
             {
+                if(useRandom)
+                {
+                    while(true)
+                    {
+                        rho = sqrt(dis(gen) * (pow(endRho,2)-pow(startRho,2))+pow(startRho,2)); // uniform distribution in annulus [startRho,endRho]
+                        fc = (endFrequency - startFrequency) * dis(gen) + startFrequency;
+                        urchin::Beta b(fc,B,rho);
+                        if(!w->HitsWall(b)) break;
+                    }
+                }
+
                 urchin::Beta b(fc,B,rho);
                 Ptot = 0;
                 if(bTE) Ptot += w->TotalPower(N,M,H,fTol,b,true);
