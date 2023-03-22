@@ -31,6 +31,15 @@ namespace urchin
         return TEkc(n,m);
     }
 
+    bool RectangularWaveguide::HitsWall(const Beta &beta)
+    {
+        bool xHit = (beta.x0 >= a - beta.Rc) || (beta.x0 <= beta.Rc);
+        bool yHit = (beta.y0 >= b - beta.Rc) || (beta.y0 <= beta.Rc);
+
+        return xHit || yHit;
+    }
+
+
     double RectangularWaveguide::TEModePower(const int& n, const int& m, const int& h, const Beta& beta)
     {
         if(!m && !n) return 0;

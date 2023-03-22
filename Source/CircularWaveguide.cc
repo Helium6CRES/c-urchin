@@ -60,6 +60,12 @@ namespace urchin
     {
         return jn_zeros[n][m] / a;
     }
+
+    bool CircularWaveguide::HitsWall(const Beta &beta)
+    {
+        return beta.rho >= a - beta.Rc;
+    }
+
     double CircularWaveguide::TEModePower(const int& n, const int& m, const int& h, const Beta& beta)
     {
         if(!m) return 0;

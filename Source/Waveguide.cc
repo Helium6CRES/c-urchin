@@ -10,6 +10,9 @@ namespace urchin
 
     double Waveguide::ModePower(const int &n, const int &m, const int &h, const Beta &beta, const bool &bTE) 
     {
+        if(HitsWall(beta))
+            return 0.;
+
         return bTE? TEModePower(n,m,h,beta): TMModePower(n,m,h,beta);
     }
 
@@ -20,6 +23,9 @@ namespace urchin
 
     double Waveguide::TotalPowerHarmonic(const unsigned &N, const unsigned &M, const unsigned &h, const Beta &beta, const bool &bTE)
     {
+        if(HitsWall(beta))
+            return 0.;
+
         double totalSum, tmpModePower;
         totalSum = 0;
 
@@ -41,6 +47,9 @@ namespace urchin
 
     double Waveguide::TotalPower(const unsigned &N, const unsigned &M, const unsigned &H, const double &fTolerance, const Beta& beta, const bool &bTE)
     {
+        if(HitsWall(beta))
+            return 0.;
+
         double totalSum = 0.;
         const bool bfTol = bool(fTolerance);
 

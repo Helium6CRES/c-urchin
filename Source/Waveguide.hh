@@ -16,6 +16,8 @@ namespace urchin
             virtual double TEModePower(const int &n, const int &m, const int &h, const Beta &beta) = 0;
             virtual double TMModePower(const int &n, const int &m, const int &h, const Beta &beta) = 0;
 
+            virtual bool HitsWall(const Beta &beta) = 0;
+
             double ModePower(const int &n, const int &m, const int &h, const Beta &beta, const bool &bTE);
 
             virtual double TEkc(const int &n, const int &m) = 0;
