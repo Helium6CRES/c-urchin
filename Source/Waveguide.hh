@@ -29,7 +29,7 @@ namespace urchin
 
 
             void OpenCSV(const std::string &filename);
-            void WriteCSV(const Beta &beta, const double &power);
+            void WriteCSV(const Beta &beta, const double &totalPower, const double &te11Power);
             void CloseCSV();
 
             std::ofstream file;

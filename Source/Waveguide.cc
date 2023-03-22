@@ -76,19 +76,23 @@ namespace urchin
 
     void Waveguide::OpenCSV(const std::string &filename)
     {
-        const std::string dlmr = ","; //delimeter
+        const std::string d = ","; //delimeter
         bool bFileExists = bool(boost::filesystem::exists(filename));
         file.open(filename, std::ios::app);
         if(!bFileExists)
-            file <<"frequency"<<dlmr<<"magnetic_field"<<dlmr<<"rho"<<dlmr<<"power"<<"\n";
+            file <<"frequency"<<d<<"magnetic_field"<<d<<"rho"<<d<<"total_power"<<d<<"TE11_power"<<"\n";
 
          file << std::setprecision(16);
     }
 
-    void Waveguide::WriteCSV(const Beta &beta, const double &power)
+    void Waveguide::WriteCSV(const Beta &beta, const double &totalPower, const double &te11Power)
     {
-        const std::string dlmr = ","; //delimeter
-        file << beta.fc<<dlmr<<beta.magnetic_field<<dlmr<<beta.rho<<dlmr<<power<<"\n";
+        const std::string d = ","; //delimeter
+        file<<beta.fc<<d;
+        file<<beta.magnetic_field<<d;
+        file<<beta.rho<<d;
+        file<<totalPower<<d;
+        file<<te11Power<<"\n";
     }
 
     void Waveguide::CloseCSV()

@@ -102,7 +102,8 @@ int main(int ac, char* av[])
                 Ptot = 0;
                 if(bTE) Ptot += w->TotalPower(N,M,H,fTol,b,true);
                 if(bTM) Ptot += w->TotalPower(N,M,H,fTol,b,false);
-                w->WriteCSV(b,Ptot);
+                double PTE11 = w->ModePower(1,1,1,b,true);
+                w->WriteCSV(b,Ptot,PTE11);
 
                 rho += dRho;
             }
