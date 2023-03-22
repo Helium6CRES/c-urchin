@@ -23,6 +23,8 @@ namespace urchin
             double kc(const int &n, const int &m, const bool &bTE);
             
             double TotalPower(const unsigned &N, const unsigned &M, const unsigned &H, const double &fTolerance, const Beta &beta, const bool &bTE);
+            double TotalPowerHarmonic(const unsigned &N, const unsigned &M, const unsigned &h, const Beta &beta, const bool &bTE);
+
 
             void OpenCSV(const std::string &filename);
             void WriteCSV(const Beta &beta, const double &power);

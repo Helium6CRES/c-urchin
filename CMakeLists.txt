@@ -12,7 +12,7 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR} CACHE PATH "Install top-level directory" FORCE)
 endif()
 
-find_package(Boost 1.46 REQUIRED COMPONENTS filesystem program_options)
+find_package(Boost 1.56 REQUIRED COMPONENTS filesystem program_options)
 
 set(DATA_DIR "${PROJECT_SOURCE_DIR}/Data")
 message("Data Directory: ${DATA_DIR}")

@@ -23,8 +23,8 @@ int main(int ac, char* av[])
     try {
         desc.add_options()
             ("help,-h", "Produce help message")
-            ("max-N-mode,N", po::value<unsigned>(&N)->default_value(1000), "Maximum possible mode value in summing over n")
-            ("max-M-mode,M", po::value<unsigned>(&M)->default_value(1000), "Maximum possible mode value in summing over m")
+            ("max-N-mode,N", po::value<unsigned>(&N)->default_value(1600), "Maximum possible mode value in summing over n")
+            ("max-M-mode,M", po::value<unsigned>(&M)->default_value(1600), "Maximum possible mode value in summing over m")
             ("max-harmonic,H", po::value<unsigned>(&H)->default_value(200), "Maximum possible harmonic h")
             ("tolerance,t", po::value<double>(&fTol)->default_value(0), "Truncate h-sum if sum changes <fTol (0 for no skipping)")
             ("output-filename,o", po::value<std::string>(&outputFilename)->default_value("out.csv"), "Filename for simulation outputs")
@@ -65,8 +65,6 @@ int main(int ac, char* av[])
         return 2;
     }
 
-    std::cout<<N<<" "<<M<<" "<<H<<std::endl;
-
     auto dX = [](double a, double b, unsigned N ){ return N==1 ? 0 : (b-a)/(N-1);};
 
     const double dB = dX(startField, endField, nFields);
@@ -74,7 +72,7 @@ int main(int ac, char* av[])
     const double dRho = dX(startRho, endRho, nRhos);
 
     const double aRadius = 0.00578;
-    const unsigned nRoots = 1000;
+    const unsigned nRoots = 1600;
 
     urchin::Waveguide *w;
     if(bCircularWaveguide)
@@ -87,7 +85,6 @@ int main(int ac, char* av[])
     }
 
     w->OpenCSV(outputFilename);
-
 
     //Loop over betas to simulate
     double Ptot;
@@ -105,7 +102,6 @@ int main(int ac, char* av[])
                 Ptot = 0;
                 if(bTE) Ptot += w->TotalPower(N,M,H,fTol,b,true);
                 if(bTM) Ptot += w->TotalPower(N,M,H,fTol,b,false);
-                std::cout<<Ptot<<std::endl;
                 w->WriteCSV(b,Ptot);
 
                 rho += dRho;

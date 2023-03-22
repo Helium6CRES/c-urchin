@@ -18,6 +18,27 @@ namespace urchin
         return bTE? TEkc(n,m): TMkc(n,m);
     }
 
+    double Waveguide::TotalPowerHarmonic(const unsigned &N, const unsigned &M, const unsigned &h, const Beta &beta, const bool &bTE)
+    {
+        double totalSum, tmpModePower;
+        totalSum = 0;
+
+        for(int n=0; n < N; ++n)
+        {
+            if( h <= kc(n,0,bTE)/beta.k) break;
+
+            for(int m=0; m < M; ++m)
+            {
+                if( h <= kc(n,m,bTE)/beta.k) break;
+
+                tmpModePower = ModePower(n, m, h, beta,bTE);
+                totalSum +=tmpModePower;
+            }
+        }
+
+        return totalSum;
+    }
+
     double Waveguide::TotalPower(const unsigned &N, const unsigned &M, const unsigned &H, const double &fTolerance, const Beta& beta, const bool &bTE)
     {
         double totalSum = 0.;
