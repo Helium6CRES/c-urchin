@@ -53,26 +53,35 @@ namespace urchin
         double totalSum = 0.;
         const bool bfTol = bool(fTolerance);
 
-        double hSum, tmpModePower;
+        double tmpModePower;
+        double mSum, nSum;
+        const int dH = 10;
+        int h;
 
-        for(int n=0; n < N; ++n)
-            for(int m=0; m < M; ++m)
+        for(int dh=0; dh < dH; ++dh)
+        {
+            nSum = 0.;
+            for(int n=0; n < N; ++n)
             {
-                int h_min = int(ceil(kc(n,m,bTE)/beta.k));
-                hSum = 0.;
-
-                for(int h=h_min; h < H; ++h)
+                mSum = 0.;
+                for(int m=0; m < M; ++m)
                 {
+                    h = int(ceil(kc(n,m,bTE)/beta.k)) + dh;
+                    if(h >= H) break;
                     tmpModePower = ModePower(n, m, h, beta,bTE);
-                    hSum += tmpModePower;
-                    if(bfTol && tmpModePower / hSum < fTolerance) break;
+                    mSum += tmpModePower;
+                    if(bfTol && m%10 == 0 && tmpModePower / mSum < fTolerance) break;
                 }
-
-                totalSum +=hSum;
+                nSum += mSum;
+                if(bfTol && n > h && mSum / nSum < fTolerance) break;
             }
+            totalSum += nSum;
+            if(bfTol && nSum / totalSum < fTolerance) break;
+        }
 
         return totalSum;
     }
+
 
     void Waveguide::OpenCSV(const std::string &filename)
     {
